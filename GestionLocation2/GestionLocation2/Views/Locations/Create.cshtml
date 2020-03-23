@@ -1,0 +1,174 @@
+﻿@model GestionLocation2.Models.Location
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    if(ViewBag.message!= null)
+    {
+        @ViewBag.message
+    }
+    <div class="form-horizontal">
+        <h4>Client</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Client.Id)
+        <div class="form-group">
+            @Html.LabelFor(model => model.Client.Numpiece, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Client.Numpiece, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Client.Numpiece, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Client.Nom, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Client.Nom, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Client.Nom, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Client.Prenom, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Client.Prenom, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Client.Prenom, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Client.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Client.Date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Client.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Client.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Client.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Client.Adresse, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Client.Adresse, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Client.Adresse, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        
+    </div>
+
+    <div class="form-horizontal">
+        <h4>Location</h4>
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("Vehicule", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Vehicule.Id,(SelectList)ViewBag.vehicules,"Selectionner le Vehicule", new {    @class = "form-control"  })
+                @Html.ValidationMessageFor(model => model.Vehicule.Id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("date Location", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nbjour, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Nbjour, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nbjour, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Montantr, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Montantr, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Montantr, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+   <script type="text/javascript">
+       $(document).ready(function () {
+           $("#Client_Numpiece").change(function () {
+               $.ajax({
+                   url: "FindClient",
+                   type: "Get",
+                   data: { numpiece: $("#Client_Numpiece").val() },
+                   dataType: "json",
+                   success: function (data) {
+                       if (data.length != 0) {
+                           var d = new Date(parseInt(data[0].Date.substr(6)));
+                           var result = $.datepicker.formatDate('yy-mm-dd', d);
+                           $("#Client_Id").val(data[0].Id);
+                           $("#Client_Nom").val(data[0].Nom);
+                           $("#Client_Prenom").val(data[0].Prenom);
+                           $("#Client_Date").val(result);
+                           $("#Client_Email").val(data[0].Email);
+                           $("#Client_Adresse").val(data[0].Adresse);
+                       }
+                       else {
+                           $("#Client_Id").val("0");
+                           $("#Client_Nom").val("");
+                           $("#Client_Prenom").val("");
+                           $("#Client_Date").val("");
+                           $("#Client_Email").val("");
+                           $("#Client_Adresse").val("");
+                       }
+                       
+                   }
+               });
+           });
+           $("#Nbjour").change(function () {
+               //alert($("#Vehicule_Id").val());
+               if ($("#Vehicule_Id").val() == "") {
+                   alert("Veiller selectionner Le Vehicule ");
+
+               } else {
+                   $.ajax({
+                       url: "FindVehicule",
+                       type: "GET",
+                       data: { Id: $("#Vehicule_Id").val() },
+                       dataType: "json",
+                       success: function (data) {                       
+                           $("#Montantr").val(data.PrixJour * $("#Nbjour").val());
+                       }
+                   });
+               }
+           });
+       });
+    </script>
+}

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<GestionLocation2.Models.Location>
+@{
+    ViewBag.Title = "GetLocationByClient";
+}
+
+<h2>GetLocationByClient</h2>
+
+
+
+<div>
+    <div class="container">
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                <label class="control-label">Numero piece</label>
+                <input class="form-control" type="number" value="@ViewBag.input" name="numpiece" id="numpiece" required="required" />
+            </div>
+
+            <div class="form-group">
+                <input class="btn btn-success" type="submit" name="recherche" id="recherche" value="Recherche" />
+            </div>
+        }
+    </div>
+    <div class="container">
+        <div class="form-group">
+            <table class="display" id="myTable">
+                <thead>
+
+
+                    <tr>
+                        <td>matricule Vehicule</td>
+                        <td>Prix jour</td>
+                        <td>Nbre jour</td>
+                        <td>Montant</td>
+                        <td>Date Location</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Vehicule.Matricule)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Vehicule.PrixJour)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nbjour)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Montantr)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+<script type="text/javascript">
+    $(document).ready( function () {
+    $('#myTable').DataTable();
+    });
+</script>
+}
